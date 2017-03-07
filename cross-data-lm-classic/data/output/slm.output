@@ -1,0 +1,96 @@
+
+R version 3.2.3 (2015-12-10) -- "Wooden Christmas-Tree"
+Copyright (C) 2015 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> # http://www.statsci.org/data/general/cofreewy.html
+> 
+> # CO =  b0 + b1Hour + b2Traffic + b3Wind + e
+> 
+> cofreewy_data <- read.table("data/cofreewy.txt", header=TRUE)
+> 
+> lm_result <- lm(CO~., cofreewy_data)
+> summary(lm_result)
+
+Call:
+lm(formula = CO ~ ., data = cofreewy_data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.75030 -0.33275 -0.09021  0.22653  1.25112 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  1.318967   0.242522   5.439 2.53e-05 ***
+Hour        -0.005689   0.017066  -0.333  0.74233    
+Traffic      0.018402   0.001413  13.026 3.15e-11 ***
+Wind         0.179189   0.059517   3.011  0.00691 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.5096 on 20 degrees of freedom
+Multiple R-squared:  0.9498,	Adjusted R-squared:  0.9423 
+F-statistic: 126.1 on 3 and 20 DF,  p-value: 3.682e-13
+
+> 
+> step_lm <- step(lm_result, direction="backward")
+Start:  AIC=-28.73
+CO ~ Hour + Traffic + Wind
+
+          Df Sum of Sq    RSS     AIC
+- Hour     1     0.029  5.224 -30.597
+<none>                  5.195 -28.730
+- Wind     1     2.354  7.549 -21.759
+- Traffic  1    44.070 49.265  23.260
+
+Step:  AIC=-30.6
+CO ~ Traffic + Wind
+
+          Df Sum of Sq    RSS     AIC
+<none>                  5.224 -30.597
+- Wind     1     2.357  7.581 -23.659
+- Traffic  1    46.117 51.341  22.250
+> summary(step_lm)
+
+Call:
+lm(formula = CO ~ Traffic + Wind, data = cofreewy_data)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.72858 -0.31710 -0.09629  0.22409  1.26554 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) 1.274461   0.198137   6.432 2.25e-06 ***
+Traffic     0.018290   0.001343  13.616 6.85e-12 ***
+Wind        0.174747   0.056765   3.078   0.0057 ** 
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.4987 on 21 degrees of freedom
+Multiple R-squared:  0.9495,	Adjusted R-squared:  0.9447 
+F-statistic: 197.5 on 2 and 21 DF,  p-value: 2.419e-14
+
+> 
+> shapiro.test(step_lm$res)
+
+	Shapiro-Wilk normality test
+
+data:  step_lm$res
+W = 0.91918, p-value = 0.05601
+
+> 
