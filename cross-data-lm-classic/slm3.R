@@ -10,3 +10,13 @@ a = lm(CO~Traffic+Wind+I(Wind^2)+I(Wind^3)+
 
 b = step(a)
 summary(b); anova(b); shapiro.test(b$res)
+
+#####
+
+b1 = lm(CO~Traffic+Wind+I(Wind^2)+
+        cos((2*pi/24)*Hour)+cos((4*pi/24)*Hour))
+
+summary(b1)
+anova(b1)
+shapiro.test(b1$res)
+qqnorm(b1$res); qqline(b1$res)
