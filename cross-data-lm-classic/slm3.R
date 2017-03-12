@@ -19,4 +19,7 @@ b1 = lm(CO~Traffic+Wind+I(Wind^2)+
 summary(b1)
 anova(b1)
 shapiro.test(b1$res)
+
+png(filename="data/output/cofreewy_res.png")
 qqnorm(b1$res); qqline(b1$res)
+dev.off()
