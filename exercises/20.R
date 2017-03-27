@@ -1,0 +1,8 @@
+x <- seq(-3, 3, len=20); y <- dnorm(x)
+w <- data.frame(x,y)
+par(mfcol<-c(2,2))
+plot(y~x, w, main="norm density function")
+plot(y~x, w, type="l", main="norm density function")
+plot(y~x, w, type="o", main="norm density function")
+plot(y~x, w, type="b", main="norm density function")
+par(mfcol=c(1,1))
