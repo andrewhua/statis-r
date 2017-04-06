@@ -18,3 +18,14 @@ BI = function(D, w, ff, fm="binomial"){
     P = ee[min(I), 1]
     return(ee[min(I),])
 }
+
+p.2C = BI(7, w2, V7~.)
+
+D = 7
+p = p.2C[1]
+a = glm(V7~., w2, family="binomial")
+z = (predict(a, w2, type="response"))
+u = rep(levels(w[,D])[2], nrow(w))
+u[!(z>p)]=levels(w[,D])[1]
+(zz = table(w2[,7], u))
+(sum(zz) - sum(diag(zz)))/sum(zz)
